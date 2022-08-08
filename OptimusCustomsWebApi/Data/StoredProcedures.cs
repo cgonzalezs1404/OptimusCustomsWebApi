@@ -39,6 +39,7 @@ namespace OptimusCustomsWebApi.Data
             public static string UrlPDF = "_urlPdf";
             public static string UrlXML = "_urlXml";
             public static string EsAprobado = "_esAprobado";
+            public static string EsPagada = "_esPagada";
         }
         public struct UpdFactura
         {
@@ -46,6 +47,7 @@ namespace OptimusCustomsWebApi.Data
             public static string IdFactura = "_idFactura";
             public static string IdEstadoFactura = "_idEstadoFactura";
             public static string EsAprobado = "_esAprobado";
+            public static string EsPagada = "_esPagada";
         }
         public struct DelFactura
         {
@@ -209,6 +211,40 @@ namespace OptimusCustomsWebApi.Data
         public struct GetConfigFacturas
         {
             public static string SpName = "optimus_customs.get_config_facturas";
+        }
+
+        public struct GetTipoOperacionCatalogue
+        {
+            public static string SpName = "optimus_customs.get_catalogo_tipo_operacion";
+        }
+
+        public struct GetUsuariosCatalogue
+        {
+            public static string SpName = "optimus_customs.get_catalogo_usuario";
+        }
+        #endregion
+
+        #region Operaciones
+        public struct GetOperaciones
+        {
+            public static string SpName = "optimus_customs.get_operaciones";
+            public static string FromDate = "_fromDate";
+            public static string ToDate = "_toDate";
+        }
+
+        public struct GetOperacion
+        {
+            public static string SpName = "optimus_customs.get_operacion";
+            public static string IdOperacion = "_idOperacion";
+        }
+
+        public struct InsOperacion
+        {
+            public static string SpName = "optimus_customs.ins_operacion";
+            public static string NumeroOp = "_numeroOp";
+            public static string IdTipoOperacion = "_idTipoOperacion";
+            public static string IdUsuario = "_idUsuario";
+            public static string IdFactura = "_idFactura";
         }
         #endregion
 

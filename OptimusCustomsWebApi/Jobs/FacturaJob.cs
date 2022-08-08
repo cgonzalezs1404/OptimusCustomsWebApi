@@ -16,7 +16,14 @@ namespace OptimusCustomsWebApi.Jobs
         {
             return new Task(() =>
             {
-                
+                try
+                {
+                    DataAccess.Instance.ExecuteJob();
+                }
+                catch (Exception ex)
+                {
+
+                }
             });
 
         }

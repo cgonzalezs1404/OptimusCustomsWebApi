@@ -22,6 +22,7 @@ namespace OptimusCustomsWebApi.Model
         public byte[] FilePdf { get; set; }
         public byte[] FileXml { get; set; }
         public bool EsAprobado { get; set; }
+        public bool EsPagada { get; set; }
 
     }
 }

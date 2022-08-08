@@ -29,6 +29,8 @@ namespace OptimusCustomsWebApi.Controllers
                 if (id == 1) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.Privilegio); }
                 if (id == 2) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.EstadoFactura); }
                 if (id == 3) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.TipoFactura); }
+                if (id == 4) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.TipoOperacion); }
+                if (id == 5) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.Usuarios); }
 
             }
             catch (Exception ex)

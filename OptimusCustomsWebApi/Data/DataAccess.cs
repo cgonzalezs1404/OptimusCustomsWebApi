@@ -89,9 +89,6 @@ namespace OptimusCustomsWebApi.Data
                 scheduler.ScheduleJob(job, trigger);
 
                 // some sleep to show what's happening
-
-                ExecuteJob();
-
             }
             catch (Exception ex)
             {
@@ -105,7 +102,8 @@ namespace OptimusCustomsWebApi.Data
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="idFactura"></param>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
         /// <returns></returns>
         public List<Factura> GetFacturas(DateTime fromDate, DateTime toDate)
         {
@@ -149,7 +147,7 @@ namespace OptimusCustomsWebApi.Data
         /// <returns></returns>
         public Factura GetFactura(int idFactura)
         {
-            Factura result = null;
+            Factura model = null;
             using (var command = new MySqlCommand(StoredProcedures.GetFactura.SpName, connection))
             {
                 command.Parameters.AddWithValue(StoredProcedures.GetFactura.IdFactura, idFactura);
@@ -159,26 +157,26 @@ namespace OptimusCustomsWebApi.Data
                 {
                     while (reader.Read())
                     {
-                        result = new Factura();
-                        result.IdFactura = reader.GetInt32("idFactura");
-                        result.IdTipoFactura = reader.GetInt32("idTipoFactura");
-                        result.TipoFactura = reader.GetString("tipoFactura");
-                        result.IdEstadoFactura = reader.GetInt32("idEstadoFactura");
-                        result.EstadoFactura = reader.GetString("estadoFactura");
-                        result.RazonSocial = reader.GetString("razonSocial");
-                        result.FechaEmision = reader.GetDateTime("fechaEmision");
-                        result.RFC = reader.GetString("rfc");
-                        result.Serie = reader.GetString("serie");
-                        result.Folio = reader.GetString("folio");
-                        result.Total = reader.GetDouble("total");
-                        result.Descripcion = reader.GetString("descripcion");
-                        //result.FilePdf = reader.GetBytes("urlPdf");
-                        //result.FileXml = reader.GetString("urlXml");
-                        result.EsAprobado = reader.GetBoolean("esAprobado");
+                        model = new Factura();
+                        model.IdFactura = reader.GetInt32("idFactura");
+                        model.IdTipoFactura = reader.GetInt32("idTipoFactura");
+                        model.TipoFactura = reader.GetString("tipoFactura");
+                        model.IdEstadoFactura = reader.GetInt32("idEstadoFactura");
+                        model.EstadoFactura = reader.GetString("estadoFactura");
+                        model.RazonSocial = reader.GetString("razonSocial");
+                        model.FechaEmision = reader.GetDateTime("fechaEmision");
+                        model.RFC = reader.GetString("rfc");
+                        model.Serie = reader.GetString("serie");
+                        model.Folio = reader.GetString("folio");
+                        model.Total = reader.GetDouble("total");
+                        model.Descripcion = reader.GetString("descripcion");
+                        //model.UrlPdf = reader.GetString("urlPdf");
+                        //model.UrlXml = reader.GetString("urlXml");
+                        model.EsAprobado = reader.GetBoolean("esAprobado");
                     }
                 }
             }
-            return result;
+            return model;
         }
 
         /// <summary>
@@ -206,6 +204,7 @@ namespace OptimusCustomsWebApi.Data
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.UrlPDF, model.FilePdf);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.UrlXML, model.FileXml);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsAprobado, model.EsAprobado);
+                    command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsPagada, model.EsPagada);
                     command.ExecuteNonQuery();
 
                     result = model;
@@ -811,6 +810,111 @@ namespace OptimusCustomsWebApi.Data
         }
         #endregion
 
+        #region Operaciones
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
+        public List<Operacion> GetOperaciones(DateTime fromDate, DateTime toDate)
+        {
+            List<Operacion> result = new List<Operacion>();
+            using (var command = new MySqlCommand(StoredProcedures.GetOperaciones.SpName, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue(StoredProcedures.GetOperaciones.FromDate, fromDate);
+                command.Parameters.AddWithValue(StoredProcedures.GetOperaciones.ToDate, toDate);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var model = new Operacion
+                        {
+                            IdOperacion = reader.GetInt32("idOperacion"),
+                            IdTipoOperacion = reader.GetInt32("idTipoOperacion"),
+                            TipoOperacion = reader.GetString("tipoOperacion"),
+                            IdUsuario = reader["idUsuario"] is DBNull ? 0 : reader.GetInt32("idUsuario"),
+                            RazonSocial = reader.GetString("razonSocial"),
+                            IdFactura = reader["idFactura"] is DBNull ? 0 : reader.GetInt32("idFactura"),
+                            FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
+                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? 0 : reader.GetInt32("idComprobantePago"),
+                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? 0 : reader.GetInt32("idComplementoPago"),
+                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? 0 : reader.GetInt32("idPruebaEntrega"),
+                            NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
+                            FechaInicio = reader["fechaInicio"] is DBNull ? "" : reader.GetDateTime("fechaInicio").ToShortDateString(),
+                            FechaFin = reader["fechaFin"] is DBNull ? "" : reader.GetDateTime("fechaFin").ToShortDateString()
+                        };
+                        result.Add(model);
+                    }
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
+        public Operacion GetOperacion(int Id)
+        {
+            Operacion result = null;
+            using (var command = new MySqlCommand(StoredProcedures.GetOperacion.SpName, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue(StoredProcedures.GetOperacion.IdOperacion, Id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = new Operacion
+                        {
+                            IdOperacion = reader.GetInt32("idOperacion"),
+                            IdTipoOperacion = reader.GetInt32("idTipoOperacion"),
+                            TipoOperacion = reader.GetString("tipoOperacion"),
+                            IdUsuario = reader["idUsuario"] is DBNull ? 0 : reader.GetInt32("idUsuario"),
+                            RazonSocial = reader.GetString("razonSocial"),
+                            IdFactura = reader["idFactura"] is DBNull ? 0 : reader.GetInt32("idFactura"),
+                            FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
+                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? 0 : reader.GetInt32("idComprobantePago"),
+                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? 0 : reader.GetInt32("idComplementoPago"),
+                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? 0 : reader.GetInt32("idPruebaEntrega"),
+                            NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
+                            FechaInicio = reader["fechaInicio"] is DBNull ? "" : reader.GetDateTime("fechaInicio").ToShortDateString(),
+                            FechaFin = reader["fechaFin"] is DBNull ? "" : reader.GetDateTime("fechaFin").ToShortDateString()
+                        };
+                    }
+                }
+            }
+            return result;
+        }
+
+        public bool InsOperacion(Operacion model)
+        {
+            try
+            {
+                using (var command = new MySqlCommand(StoredProcedures.InsOperacion.SpName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue(StoredProcedures.InsOperacion.IdTipoOperacion, model.IdTipoOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.InsOperacion.IdUsuario, model.IdUsuario);
+                    command.Parameters.AddWithValue(StoredProcedures.InsOperacion.IdFactura, model.IdFactura);
+                    command.Parameters.AddWithValue(StoredProcedures.InsOperacion.NumeroOp, model.NumOperacion);
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+        #endregion
+
         #region Catalogos
         /// <summary>
         /// 
@@ -829,6 +933,12 @@ namespace OptimusCustomsWebApi.Data
                         break;
                     case TipoCatalogo.EstadoFactura:
                         sp = StoredProcedures.GetEstadoFacturaCatalogue.SpName;
+                        break;
+                    case TipoCatalogo.TipoOperacion:
+                        sp = StoredProcedures.GetTipoOperacionCatalogue.SpName;
+                        break;
+                    case TipoCatalogo.Usuarios:
+                        sp = StoredProcedures.GetUsuariosCatalogue.SpName;
                         break;
                     default:
                         sp = "";
@@ -863,6 +973,10 @@ namespace OptimusCustomsWebApi.Data
         }
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, string> GetConfigFacturas()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -888,7 +1002,11 @@ namespace OptimusCustomsWebApi.Data
             return result;
         }
 
-        private void ExecuteJob()
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ExecuteJob()
         {
             var facturas = DataAccess.Instance.GetFacturas(new DateTime(DateTime.Now.Year, 4, 1), new DateTime(DateTime.Now.Year, 4, 30));
             var estadosFactura = DataAccess.Instance.GetCatalogo(TipoCatalogo.EstadoFactura);

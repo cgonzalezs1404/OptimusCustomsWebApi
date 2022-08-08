@@ -18,6 +18,14 @@ namespace OptimusCustomsWebApi.Enum
         /// <summary>
         /// 
         /// </summary>
-        TipoFactura = 3
+        TipoFactura = 3, 
+        /// <summary>
+        /// 
+        /// </summary>
+        TipoOperacion = 4,
+        /// <summary>
+        /// 
+        /// </summary>
+        Usuarios = 5
     }
 }
