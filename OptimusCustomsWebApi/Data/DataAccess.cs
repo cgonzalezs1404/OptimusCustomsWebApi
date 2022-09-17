@@ -913,6 +913,40 @@ namespace OptimusCustomsWebApi.Data
             }
             return false;
         }
+
+        public Operacion ValidateOperacion(string numOperacion)
+        {
+            Operacion result = null;
+            using (var command = new MySqlCommand(StoredProcedures.ValidateOperacion.SpName, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue(StoredProcedures.ValidateOperacion.NumeroOp, numOperacion);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = new Operacion
+                        {
+                            IdOperacion = reader.GetInt32("idOperacion"),
+                            IdTipoOperacion = reader.GetInt32("idTipoOperacion"),
+                            TipoOperacion = reader.GetString("tipoOperacion"),
+                            IdUsuario = reader["idUsuario"] is DBNull ? 0 : reader.GetInt32("idUsuario"),
+                            RazonSocial = reader.GetString("razonSocial"),
+                            IdFactura = reader["idFactura"] is DBNull ? 0 : reader.GetInt32("idFactura"),
+                            FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
+                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? 0 : reader.GetInt32("idComprobantePago"),
+                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? 0 : reader.GetInt32("idComplementoPago"),
+                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? 0 : reader.GetInt32("idPruebaEntrega"),
+                            NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
+                            FechaInicio = reader["fechaInicio"] is DBNull ? "" : reader.GetDateTime("fechaInicio").ToShortDateString(),
+                            FechaFin = reader["fechaFin"] is DBNull ? "" : reader.GetDateTime("fechaFin").ToShortDateString()
+                        };
+                    }
+                }
+            }
+            return result;
+        }
         #endregion
 
         #region Catalogos

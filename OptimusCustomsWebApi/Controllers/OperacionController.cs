@@ -60,5 +60,12 @@ namespace OptimusCustomsWebApi.Controllers
             return null;
 
         }
+
+        [HttpGet]
+        [Route("validate")]
+        public Operacion Validate([FromQuery] string numOperacion)
+        {
+            return DataAccess.Instance.ValidateOperacion(numOperacion);
+        }
     }
 }

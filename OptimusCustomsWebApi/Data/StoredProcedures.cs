@@ -246,6 +246,12 @@ namespace OptimusCustomsWebApi.Data
             public static string IdUsuario = "_idUsuario";
             public static string IdFactura = "_idFactura";
         }
+
+        public struct ValidateOperacion
+        {
+            public static string SpName = "optimus_customs.validate_operacion";
+            public static string NumeroOp = "_numeroOp";
+        }
         #endregion
 
 
