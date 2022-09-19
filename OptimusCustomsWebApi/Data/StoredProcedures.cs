@@ -244,13 +244,23 @@ namespace OptimusCustomsWebApi.Data
             public static string NumeroOp = "_numeroOp";
             public static string IdTipoOperacion = "_idTipoOperacion";
             public static string IdUsuario = "_idUsuario";
-            public static string IdFactura = "_idFactura";
         }
 
         public struct ValidateOperacion
         {
             public static string SpName = "optimus_customs.validate_operacion";
             public static string NumeroOp = "_numeroOp";
+        }
+
+        public struct UpdOperacion
+        {
+            public static string SpName = "optimus_customs.upd_operacion";
+            public static string IdOperacion = "_idOperacion";
+            public static string IdFactura = "_idFactura";
+            public static string IdComprobantePago = "_idComprobantePago";
+            public static string IdComplementoPago = "_idComplementoPago";
+            public static string IdPruebaEntrega = "_idPruebaEntrega";
+            public static string FechaFin = "_fechaFin";
         }
         #endregion
 

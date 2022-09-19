@@ -205,9 +205,29 @@ namespace OptimusCustomsWebApi.Data
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.UrlXML, model.FileXml);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsAprobado, model.EsAprobado);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsPagada, model.EsPagada);
-                    command.ExecuteNonQuery();
-
-                    result = model;
+                    
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result = new Factura();
+                            result.IdFactura = reader.GetInt32("idFactura");
+                            result.IdTipoFactura = reader.GetInt32("idTipoFactura");
+                            result.TipoFactura = reader.GetString("tipoFactura");
+                            result.IdEstadoFactura = reader.GetInt32("idEstadoFactura");
+                            result.EstadoFactura = reader.GetString("estadoFactura");
+                            result.RazonSocial = reader.GetString("razonSocial");
+                            result.FechaEmision = reader.GetDateTime("fechaEmision");
+                            result.RFC = reader.GetString("rfc");
+                            result.Serie = reader.GetString("serie");
+                            result.Folio = reader.GetString("folio");
+                            result.Total = reader.GetDouble("total");
+                            result.Descripcion = reader.GetString("descripcion");
+                            //result.FilePdf = reader.GetBytes(0,"urlPdf");
+                            //result.FileXml = reader.GetString("urlXml");
+                            result.EsAprobado = reader.GetBoolean("esAprobado");
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -835,16 +855,16 @@ namespace OptimusCustomsWebApi.Data
                             IdOperacion = reader.GetInt32("idOperacion"),
                             IdTipoOperacion = reader.GetInt32("idTipoOperacion"),
                             TipoOperacion = reader.GetString("tipoOperacion"),
-                            IdUsuario = reader["idUsuario"] is DBNull ? 0 : reader.GetInt32("idUsuario"),
+                            IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
-                            IdFactura = reader["idFactura"] is DBNull ? 0 : reader.GetInt32("idFactura"),
+                            IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
                             FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
-                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? 0 : reader.GetInt32("idComprobantePago"),
-                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? 0 : reader.GetInt32("idComplementoPago"),
-                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? 0 : reader.GetInt32("idPruebaEntrega"),
+                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? null : reader.GetInt32("idComprobantePago"),
+                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? null : reader.GetInt32("idComplementoPago"),
+                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? null : reader.GetInt32("idPruebaEntrega"),
                             NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
-                            FechaInicio = reader["fechaInicio"] is DBNull ? "" : reader.GetDateTime("fechaInicio").ToShortDateString(),
-                            FechaFin = reader["fechaFin"] is DBNull ? "" : reader.GetDateTime("fechaFin").ToShortDateString()
+                            FechaInicio = reader["fechaInicio"] is DBNull ? null : reader.GetDateTime("fechaInicio"),
+                            FechaFin = reader["fechaFin"] is DBNull ? null : reader.GetDateTime("fechaFin")
                         };
                         result.Add(model);
                     }
@@ -875,16 +895,16 @@ namespace OptimusCustomsWebApi.Data
                             IdOperacion = reader.GetInt32("idOperacion"),
                             IdTipoOperacion = reader.GetInt32("idTipoOperacion"),
                             TipoOperacion = reader.GetString("tipoOperacion"),
-                            IdUsuario = reader["idUsuario"] is DBNull ? 0 : reader.GetInt32("idUsuario"),
+                            IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
-                            IdFactura = reader["idFactura"] is DBNull ? 0 : reader.GetInt32("idFactura"),
+                            IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
                             FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
-                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? 0 : reader.GetInt32("idComprobantePago"),
-                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? 0 : reader.GetInt32("idComplementoPago"),
-                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? 0 : reader.GetInt32("idPruebaEntrega"),
+                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? null : reader.GetInt32("idComprobantePago"),
+                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? null : reader.GetInt32("idComplementoPago"),
+                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? null : reader.GetInt32("idPruebaEntrega"),
                             NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
-                            FechaInicio = reader["fechaInicio"] is DBNull ? "" : reader.GetDateTime("fechaInicio").ToShortDateString(),
-                            FechaFin = reader["fechaFin"] is DBNull ? "" : reader.GetDateTime("fechaFin").ToShortDateString()
+                            FechaInicio = reader["fechaInicio"] is DBNull ? null : reader.GetDateTime("fechaInicio"),
+                            FechaFin = reader["fechaFin"] is DBNull ? null : reader.GetDateTime("fechaFin")
                         };
                     }
                 }
@@ -901,7 +921,6 @@ namespace OptimusCustomsWebApi.Data
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue(StoredProcedures.InsOperacion.IdTipoOperacion, model.IdTipoOperacion);
                     command.Parameters.AddWithValue(StoredProcedures.InsOperacion.IdUsuario, model.IdUsuario);
-                    command.Parameters.AddWithValue(StoredProcedures.InsOperacion.IdFactura, model.IdFactura);
                     command.Parameters.AddWithValue(StoredProcedures.InsOperacion.NumeroOp, model.NumOperacion);
                     command.ExecuteNonQuery();
                     return true;
@@ -931,21 +950,45 @@ namespace OptimusCustomsWebApi.Data
                             IdOperacion = reader.GetInt32("idOperacion"),
                             IdTipoOperacion = reader.GetInt32("idTipoOperacion"),
                             TipoOperacion = reader.GetString("tipoOperacion"),
-                            IdUsuario = reader["idUsuario"] is DBNull ? 0 : reader.GetInt32("idUsuario"),
+                            IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
-                            IdFactura = reader["idFactura"] is DBNull ? 0 : reader.GetInt32("idFactura"),
+                            IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
                             FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
-                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? 0 : reader.GetInt32("idComprobantePago"),
-                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? 0 : reader.GetInt32("idComplementoPago"),
-                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? 0 : reader.GetInt32("idPruebaEntrega"),
+                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? null : reader.GetInt32("idComprobantePago"),
+                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? null : reader.GetInt32("idComplementoPago"),
+                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? null : reader.GetInt32("idPruebaEntrega"),
                             NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
-                            FechaInicio = reader["fechaInicio"] is DBNull ? "" : reader.GetDateTime("fechaInicio").ToShortDateString(),
-                            FechaFin = reader["fechaFin"] is DBNull ? "" : reader.GetDateTime("fechaFin").ToShortDateString()
+                            FechaInicio = reader["fechaInicio"] is DBNull ? null : reader.GetDateTime("fechaInicio"),
+                            FechaFin = reader["fechaFin"] is DBNull ? null : reader.GetDateTime("fechaFin")
                         };
                     }
                 }
             }
             return result;
+        }
+
+        public bool UpdOperacion(Operacion model)
+        {
+            try
+            {
+                using (var command = new MySqlCommand(StoredProcedures.UpdOperacion.SpName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdOperacion, model.IdOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdFactura, model.IdFactura);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdComplementoPago, model.IdComplementoPago);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdComprobantePago, model.IdComprobantePago);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdPruebaEntrega, model.IdPruebaEntrega);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.FechaFin, model.FechaFin);
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
         }
         #endregion
 

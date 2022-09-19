@@ -33,16 +33,23 @@ namespace OptimusCustomsWebApi.Controllers
         }
 
         [HttpPost]
-        public void Create([FromBody] Factura model)
+        public ObjectResult Create([FromBody] Factura model)
         {
             try
             {
-                DataAccess.Instance.InsertFactura(model);
+                if(model != null)
+                {
+                    if (DataAccess.Instance.InsertFactura(model) != null)
+                        return Ok(DataAccess.Instance.InsertFactura(model));
+                    else
+                        return BadRequest(null);
+                }
             }
             catch (Exception ex)
             {
 
             }
+            return null;
         }
 
         [HttpPut]

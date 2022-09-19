@@ -67,5 +67,18 @@ namespace OptimusCustomsWebApi.Controllers
         {
             return DataAccess.Instance.ValidateOperacion(numOperacion);
         }
+
+        [HttpPut]
+        public ObjectResult Update([FromBody] Operacion model)
+        {
+            if(model != null)
+            {
+                if (DataAccess.Instance.UpdOperacion(model))
+                    return Ok(model);
+                else
+                    return BadRequest(null);
+            }
+            return null;
+        }
     }
 }
