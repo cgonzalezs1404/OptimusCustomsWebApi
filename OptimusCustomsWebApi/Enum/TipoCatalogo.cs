@@ -26,6 +26,10 @@ namespace OptimusCustomsWebApi.Enum
         /// <summary>
         /// 
         /// </summary>
-        Usuarios = 5
+        Usuarios = 5,
+        /// <summary>
+        /// 
+        /// </summary>
+        TipoDocumento = 6
     }
 }

@@ -4,6 +4,7 @@ using OptimusCustomsWebApi.Data;
 using OptimusCustomsWebApi.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace OptimusCustomsWebApi.Controllers
         {
             try
             {
-                if(model != null)
+                if (model != null)
                 {
                     if (DataAccess.Instance.InsertFactura(model) != null)
                         return Ok(DataAccess.Instance.InsertFactura(model));
@@ -76,6 +77,22 @@ namespace OptimusCustomsWebApi.Controllers
             {
 
             }
+        }
+
+        [HttpGet]
+        [Route("pdf")]
+        public Stream GetDocumento([FromQuery] int idFactura)
+        {
+            Stream result = null;
+            try
+            {
+                result = DataAccess.Instance.GetFacturaPDF(idFactura);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
         }
     }
 }

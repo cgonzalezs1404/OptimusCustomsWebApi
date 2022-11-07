@@ -22,7 +22,7 @@ namespace OptimusCustomsWebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public List<Catalogo> Privilegios(int id)
+        public List<Catalogo> GetCatalogo(int id)
         {
             try
             {
@@ -31,6 +31,7 @@ namespace OptimusCustomsWebApi.Controllers
                 if (id == 3) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.TipoFactura); }
                 if (id == 4) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.TipoOperacion); }
                 if (id == 5) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.Usuarios); }
+                if (id == 6) { return DataAccess.Instance.GetCatalogo(TipoCatalogo.TipoDocumento); }
 
             }
             catch (Exception ex)

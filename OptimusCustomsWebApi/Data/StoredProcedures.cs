@@ -54,89 +54,11 @@ namespace OptimusCustomsWebApi.Data
             public static string SpName = "optimus_customs.del_factura";
             public static string IdFactura = "_idFactura";
         }
-        #endregion
 
-        #region ComplementoPago
-        public struct GetComplementoPago
+        public struct GetFacturaPDF
         {
-            public static string SpName = "optimus_customs.get_complemento_pago";
-            public static string IdComplementoPago = "_idComplementoPago";
-        }
-        public struct InsComplementoPago
-        {
-            public static string SpName = "optimus_customs.ins_complemento_pago";
-            public static string Nombre = "nombre";
-            public static string FechaEmision = "fechaEmision";
-            public static string Url = "_url";
-        }
-        public struct UpdComplementoPago
-        {
-            public static string SpName = "optimus_customs.upd_complemento_pago";
-            public static string IdComplementoPago = "_idComplementoPago";
-            public static string Nombre = "nombre";
-            public static string FechaEmision = "fechaEmision";
-            public static string Url = "_url";
-        }
-        public struct DelComplementoPago
-        {
-            public static string SpName = "optimus_customs.del_complemento_pago";
-            public static string IdComplementoPago = "_idComplementoPago";
-        }
-        #endregion
-
-        #region ComprobantePago
-        public struct GetComprobantePago
-        {
-            public static string SpName = "optimus_customs.get_comprobante_pago";
-            public static string IdComprobantePago = "_idComprobantePago";
-        }
-        public struct InsComprobantePago
-        {
-            public static string SpName = "optimus_customs.ins_comprobante_pago";
-            public static string Nombre = "nombre";
-            public static string FechaEmision = "fechaEmision";
-            public static string Url = "_url";
-        }
-        public struct UpdComprobantePago
-        {
-            public static string SpName = "optimus_customs.upd_comprobante_pago";
-            public static string IdComprobantePago = "_idComprobantePago";
-            public static string Nombre = "nombre";
-            public static string FechaEmision = "fechaEmision";
-            public static string Url = "_url";
-        }
-        public struct DelComprobantePago
-        {
-            public static string SpName = "optimus_customs.del_comprobante_pago";
-            public static string IdComprobantePago = "_idComprobantePago";
-        }
-        #endregion
-
-        #region PruebaEntrega
-        public struct GetPruebaEntrega
-        {
-            public static string SpName = "optimus_customs.get_prueba_entrega";
-            public static string IdPruebaEntrega = "_idComprobantePago";
-        }
-        public struct InsPruebaEntrega
-        {
-            public static string SpName = "optimus_customs.ins_prueba_entrega";
-            public static string Nombre = "nombre";
-            public static string FechaEmision = "fechaEmision";
-            public static string Url = "_url";
-        }
-        public struct UpdPruebaEntrega
-        {
-            public static string SpName = "optimus_customs.upd_prueba_entrega";
-            public static string IdPruebaEntrega = "_idPruebaEntrega";
-            public static string Nombre = "nombre";
-            public static string FechaEmision = "fechaEmision";
-            public static string Url = "_url";
-        }
-        public struct DelPruebaEntrega
-        {
-            public static string SpName = "optimus_customs.del_prueba_entrega";
-            public static string IdPruebaEntrega = "_idPruebaEntrega";
+            public static string SpName = "optimus_customs.get_factura_pdf";
+            public static string IdFactura = "_idFactura";
         }
         #endregion
 
@@ -222,6 +144,11 @@ namespace OptimusCustomsWebApi.Data
         {
             public static string SpName = "optimus_customs.get_catalogo_usuario";
         }
+
+        public struct GetTipoDocumentoCatalogue
+        {
+            public static string SpName = "optimus_customs.get_catalogo_tipo_documento";
+        }
         #endregion
 
         #region Operaciones
@@ -261,6 +188,28 @@ namespace OptimusCustomsWebApi.Data
             public static string IdComplementoPago = "_idComplementoPago";
             public static string IdPruebaEntrega = "_idPruebaEntrega";
             public static string FechaFin = "_fechaFin";
+        }
+
+        public struct InsDetalleOperacion
+        {
+            public static string SpName = "optimus_customs.ins_operacion";
+            public static string IdOperacion = "_idOperacion";
+            public static string IdTipoDocumento = "_idTipoDoc";
+        }
+
+        public struct UpdDetalleOperacion
+        {
+            public static string SpName = "optimus_customs.upd_documento";
+            public static string IdOperacion = "_idOperacion";
+            public static string IdTipoDocumento = "_idTipoDoc";
+            public static string SourceFile = "_sourceFile";
+        }
+
+        public struct GetDocumento
+        {
+            public static string SpName = "optimus_customs.get_documento";
+            public static string IdOperacion = "_idOperacion";
+            public static string IdTipoDocumento = "_idTipoDoc";
         }
         #endregion
 

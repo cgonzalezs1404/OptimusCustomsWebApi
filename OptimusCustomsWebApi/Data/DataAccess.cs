@@ -131,8 +131,6 @@ namespace OptimusCustomsWebApi.Data
                         model.Folio = reader.GetString("folio");
                         model.Total = reader.GetDouble("total");
                         model.Descripcion = reader.GetString("descripcion");
-                        //model.UrlPdf = reader.GetString("urlPdf");
-                        //model.UrlXml = reader.GetString("urlXml");
                         model.EsAprobado = reader.GetBoolean("esAprobado");
                         result.Add(model);
                     }
@@ -170,8 +168,6 @@ namespace OptimusCustomsWebApi.Data
                         model.Folio = reader.GetString("folio");
                         model.Total = reader.GetDouble("total");
                         model.Descripcion = reader.GetString("descripcion");
-                        //model.UrlPdf = reader.GetString("urlPdf");
-                        //model.UrlXml = reader.GetString("urlXml");
                         model.EsAprobado = reader.GetBoolean("esAprobado");
                     }
                 }
@@ -205,7 +201,7 @@ namespace OptimusCustomsWebApi.Data
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.UrlXML, model.FileXml);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsAprobado, model.EsAprobado);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsPagada, model.EsPagada);
-                    
+
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -285,320 +281,30 @@ namespace OptimusCustomsWebApi.Data
 
             }
         }
-        #endregion
 
-        #region ComplementoPago
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ComplementoPago GetComplementoPago(int idComplementoPago)
+        public Stream GetFacturaPDF(int idFactura)
         {
-            ComplementoPago result = null;
-            using (var command = new MySqlCommand(StoredProcedures.GetComplementoPago.SpName, connection))
+            Stream result = null;
+            try
             {
-                command.Parameters.AddWithValue(StoredProcedures.GetComplementoPago.IdComplementoPago, idComplementoPago);
-                command.CommandType = CommandType.StoredProcedure;
-
-                using (var reader = command.ExecuteReader())
+                using (var command = new MySqlCommand(StoredProcedures.GetFacturaPDF.SpName, connection))
                 {
-                    while (reader.Read())
+                    command.Parameters.AddWithValue(StoredProcedures.GetFacturaPDF.IdFactura, idFactura);
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = command.ExecuteReader())
                     {
-                        result = new ComplementoPago();
-                        result.IdComplementoPago = reader.GetInt32("idComplementoPago");
-                        result.Nombre = reader.GetString("nombre");
-                        result.FechaEmision = reader.GetDateTime("fechaEmision");
-                        result.Url = reader.GetString("url");
+                        while (reader.Read())
+                        {
+                            result = reader.GetStream("filePdf");
+                        }
                     }
                 }
             }
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ComplementoPago InsertComplementoPago(ComplementoPago model)
-        {
-            ComplementoPago result = null;
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.InsComplementoPago.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.InsComplementoPago.Nombre, model.Nombre);
-                    command.Parameters.AddWithValue(StoredProcedures.InsComplementoPago.FechaEmision, model.FechaEmision);
-                    command.Parameters.AddWithValue(StoredProcedures.InsComplementoPago.Url, model.Url);
-                    command.ExecuteNonQuery();
-
-                    result = model;
-                }
-            }
             catch (Exception ex)
             {
 
             }
             return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ComplementoPago UpdateComplementoPago(ComplementoPago model)
-        {
-            ComplementoPago result = null;
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.UpdComplementoPago.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComplementoPago.IdComplementoPago, model.IdComplementoPago);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComplementoPago.Nombre, model.Nombre);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComplementoPago.FechaEmision, model.FechaEmision);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComplementoPago.Url, model.Url);
-                    command.ExecuteNonQuery();
-
-                    result = model;
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return result;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        public void DeleteComplementoPago(int idComplementoPago)
-        {
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.DelComplementoPago.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.DelComplementoPago.IdComplementoPago, idComplementoPago);
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        #endregion
-
-        #region ComprobantePago
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ComprobantePago GetComprobantePago(int idComprobantePago)
-        {
-            ComprobantePago result = null;
-            using (var command = new MySqlCommand(StoredProcedures.GetComprobantePago.SpName, connection))
-            {
-                command.Parameters.AddWithValue(StoredProcedures.GetComprobantePago.IdComprobantePago, idComprobantePago);
-                command.CommandType = CommandType.StoredProcedure;
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        result = new ComprobantePago();
-                        result.IdComprobantePago = reader.GetInt32("idComprobantePago");
-                        result.Nombre = reader.GetString("nombre");
-                        result.FechaEmision = reader.GetDateTime("fechaEmision");
-                        result.Url = reader.GetString("url");
-                    }
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ComprobantePago InsertComprobantePago(ComprobantePago model)
-        {
-            ComprobantePago result = null;
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.InsComprobantePago.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.InsComprobantePago.Nombre, model.Nombre);
-                    command.Parameters.AddWithValue(StoredProcedures.InsComprobantePago.FechaEmision, model.FechaEmision);
-                    command.Parameters.AddWithValue(StoredProcedures.InsComprobantePago.Url, model.Url);
-                    command.ExecuteNonQuery();
-
-                    result = model;
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ComprobantePago UpdateComprobantePago(ComprobantePago model)
-        {
-            ComprobantePago result = null;
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.UpdComprobantePago.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComprobantePago.IdComprobantePago, model.IdComprobantePago);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComprobantePago.Nombre, model.Nombre);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComprobantePago.FechaEmision, model.FechaEmision);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdComprobantePago.Url, model.Url);
-                    command.ExecuteNonQuery();
-
-                    result = model;
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return result;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        public void DeleteComprobantePago(int idComprobantePago)
-        {
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.DelComprobantePago.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.DelComprobantePago.IdComprobantePago, idComprobantePago);
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        #endregion
-
-        #region PruebaEntrega
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public PruebaEntrega GetPruebaEntrega(int idPruebaEntrega)
-        {
-            PruebaEntrega result = null;
-            using (var command = new MySqlCommand(StoredProcedures.GetPruebaEntrega.SpName, connection))
-            {
-                command.Parameters.AddWithValue(StoredProcedures.GetPruebaEntrega.IdPruebaEntrega, idPruebaEntrega);
-                command.CommandType = CommandType.StoredProcedure;
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        result = new PruebaEntrega();
-                        result.IdPruebaEntrega = reader.GetInt32("idPruebaEntrega");
-                        result.Nombre = reader.GetString("nombre");
-                        result.FechaEmision = reader.GetDateTime("fechaEmision");
-                        result.Url = reader.GetString("url");
-                    }
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public PruebaEntrega InsertPruebaEntrega(PruebaEntrega model)
-        {
-            PruebaEntrega result = null;
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.InsPruebaEntrega.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.InsPruebaEntrega.Nombre, model.Nombre);
-                    command.Parameters.AddWithValue(StoredProcedures.InsPruebaEntrega.FechaEmision, model.FechaEmision);
-                    command.Parameters.AddWithValue(StoredProcedures.InsPruebaEntrega.Url, model.Url);
-                    command.ExecuteNonQuery();
-
-                    result = model;
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public PruebaEntrega UpdatePruebaEntrega(PruebaEntrega model)
-        {
-            PruebaEntrega result = null;
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.UpdPruebaEntrega.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.UpdPruebaEntrega.IdPruebaEntrega, model.IdPruebaEntrega);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdPruebaEntrega.Nombre, model.Nombre);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdPruebaEntrega.FechaEmision, model.FechaEmision);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdPruebaEntrega.Url, model.Url);
-                    command.ExecuteNonQuery();
-
-                    result = model;
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return result;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        public void DeletePruebaEntrega(int idPruebaEntrega)
-        {
-            try
-            {
-                using (var command = new MySqlCommand(StoredProcedures.DelPruebaEntrega.SpName, connection))
-                {
-                    command.Parameters.AddWithValue(StoredProcedures.DelPruebaEntrega.IdPruebaEntrega, idPruebaEntrega);
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
         }
         #endregion
 
@@ -858,10 +564,9 @@ namespace OptimusCustomsWebApi.Data
                             IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
                             IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
-                            FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
-                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? null : reader.GetInt32("idComprobantePago"),
-                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? null : reader.GetInt32("idComplementoPago"),
-                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? null : reader.GetInt32("idPruebaEntrega"),
+                            ExistePruebaEntrega = reader["pruebaEntrega"] is DBNull ? false : reader.GetBoolean("pruebaEntrega"),
+                            ExisteComplementoPago = reader["complementoPago"] is DBNull ? false : reader.GetBoolean("complementoPago"),
+                            ExisteComprobantePago = reader["comprobantePago"] is DBNull ? false : reader.GetBoolean("comprobantePago"),
                             NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
                             FechaInicio = reader["fechaInicio"] is DBNull ? null : reader.GetDateTime("fechaInicio"),
                             FechaFin = reader["fechaFin"] is DBNull ? null : reader.GetDateTime("fechaFin")
@@ -898,10 +603,9 @@ namespace OptimusCustomsWebApi.Data
                             IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
                             IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
-                            FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
-                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? null : reader.GetInt32("idComprobantePago"),
-                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? null : reader.GetInt32("idComplementoPago"),
-                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? null : reader.GetInt32("idPruebaEntrega"),
+                            ExistePruebaEntrega = reader["pruebaEntrega"] is DBNull ? false : reader.GetBoolean("pruebaEntrega"),
+                            ExisteComplementoPago = reader["complementoPago"] is DBNull ? false : reader.GetBoolean("complementoPago"),
+                            ExisteComprobantePago = reader["comprobantePago"] is DBNull ? false : reader.GetBoolean("comprobantePago"),
                             NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
                             FechaInicio = reader["fechaInicio"] is DBNull ? null : reader.GetDateTime("fechaInicio"),
                             FechaFin = reader["fechaFin"] is DBNull ? null : reader.GetDateTime("fechaFin")
@@ -953,10 +657,9 @@ namespace OptimusCustomsWebApi.Data
                             IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
                             IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
-                            FolioFactura = reader["folioFactura"] is DBNull ? "" : reader.GetString("folioFactura"),
-                            IdComprobantePago = reader["idComprobantePago"] is DBNull ? null : reader.GetInt32("idComprobantePago"),
-                            IdComplementoPago = reader["idComplementoPago"] is DBNull ? null : reader.GetInt32("idComplementoPago"),
-                            IdPruebaEntrega = reader["idPruebaEntrega"] is DBNull ? null : reader.GetInt32("idPruebaEntrega"),
+                            ExistePruebaEntrega = reader["pruebaEntrega"] is DBNull ? false : reader.GetBoolean("pruebaEntrega"),
+                            ExisteComplementoPago = reader["complementoPago"] is DBNull ? false : reader.GetBoolean("complementoPago"),
+                            ExisteComprobantePago = reader["comprobantePago"] is DBNull ? false : reader.GetBoolean("comprobantePago"),
                             NumOperacion = reader["numeroOp"] is DBNull ? "" : reader.GetString("numeroOp"),
                             FechaInicio = reader["fechaInicio"] is DBNull ? null : reader.GetDateTime("fechaInicio"),
                             FechaFin = reader["fechaFin"] is DBNull ? null : reader.GetDateTime("fechaFin")
@@ -976,9 +679,6 @@ namespace OptimusCustomsWebApi.Data
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdOperacion, model.IdOperacion);
                     command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdFactura, model.IdFactura);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdComplementoPago, model.IdComplementoPago);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdComprobantePago, model.IdComprobantePago);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdPruebaEntrega, model.IdPruebaEntrega);
                     command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.FechaFin, model.FechaFin);
                     command.ExecuteNonQuery();
                     return true;
@@ -989,6 +689,73 @@ namespace OptimusCustomsWebApi.Data
 
             }
             return false;
+        }
+
+        public bool InsDocumento(Documento model)
+        {
+            try
+            {
+                using (var command = new MySqlCommand(StoredProcedures.InsDetalleOperacion.SpName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue(StoredProcedures.InsDetalleOperacion.IdOperacion, model.IdOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.InsDetalleOperacion.IdTipoDocumento, model.IdTipoDocumento);
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        public bool UpdDocumento(Documento model)
+        {
+            try
+            {
+                using (var command = new MySqlCommand(StoredProcedures.UpdDetalleOperacion.SpName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue(StoredProcedures.UpdDetalleOperacion.IdOperacion, model.IdOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdDetalleOperacion.IdTipoDocumento, model.IdTipoDocumento);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdDetalleOperacion.SourceFile, model.SourceFile);
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
+        }
+
+        public Stream GetDocumento(int idOperacion, int idTipoDocumento)
+        {
+            Stream result = null;
+            try
+            {
+                using (var command = new MySqlCommand(StoredProcedures.GetDocumento.SpName, connection))
+                {
+                    command.Parameters.AddWithValue(StoredProcedures.GetDocumento.IdOperacion, idOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.GetDocumento.IdTipoDocumento, idTipoDocumento);
+                    command.CommandType = CommandType.StoredProcedure;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result = reader.GetStream("sourceFile");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
         }
         #endregion
 
@@ -1016,6 +783,9 @@ namespace OptimusCustomsWebApi.Data
                         break;
                     case TipoCatalogo.Usuarios:
                         sp = StoredProcedures.GetUsuariosCatalogue.SpName;
+                        break;
+                    case TipoCatalogo.TipoDocumento:
+                        sp = StoredProcedures.GetTipoDocumentoCatalogue.SpName;
                         break;
                     default:
                         sp = "";
