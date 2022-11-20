@@ -338,7 +338,7 @@ namespace OptimusCustomsWebApi.Data
                                 Mail = reader.GetString("mail"),
                                 Telefono = reader.GetString("telefono"),
                                 DireccionFiscal = reader.GetString("direccionFiscal"),
-                                IdPrivilegio = reader.GetInt32("idPrivilegio"),
+                                IdTipoUsuario = reader.GetInt32("idTipoUsuario"),
                                 TipoUsuario = reader.GetString("tipoUsuario")
                             };
                             result.Add(model);
@@ -382,7 +382,7 @@ namespace OptimusCustomsWebApi.Data
                                 Mail = reader.GetString("mail"),
                                 Telefono = reader.GetString("telefono"),
                                 DireccionFiscal = reader.GetString("direccionFiscal"),
-                                IdPrivilegio = reader.GetInt32("idPrivilegio"),
+                                IdTipoUsuario = reader.GetInt32("idTipoUsuario"),
                                 TipoUsuario = reader.GetString("tipoUsuario")
                             };
                         }
@@ -426,7 +426,7 @@ namespace OptimusCustomsWebApi.Data
                                 Mail = reader.GetString("mail"),
                                 Telefono = reader.GetString("telefono"),
                                 DireccionFiscal = reader.GetString("direccionFiscal"),
-                                IdPrivilegio = reader.GetInt32("idPrivilegio"),
+                                IdTipoUsuario = reader.GetInt32("idTipoUsuario"),
                                 TipoUsuario = reader.GetString("tipoUsuario")
                             };
                         }
@@ -454,7 +454,7 @@ namespace OptimusCustomsWebApi.Data
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.IdCliente, model.IdUsuario);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.IdPrivilegio, model.IdPrivilegio);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.IdPrivilegio, model.IdTipoUsuario);
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.Nombre, model.Nombre);
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.Apellido, model.Apellido);
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.RFC, model.RFC);
@@ -462,7 +462,6 @@ namespace OptimusCustomsWebApi.Data
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.Mail, model.Mail);
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.Telefono, model.Telefono);
                     command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.DireccionFiscal, model.DireccionFiscal);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdUsuario.Password, model.Password);
 
                     command.ExecuteNonQuery();
 
@@ -489,7 +488,6 @@ namespace OptimusCustomsWebApi.Data
                 using (var command = new MySqlCommand(StoredProcedures.InsUsuario.SpName, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue(StoredProcedures.InsUsuario.IdPrivilegio, model.IdPrivilegio);
                     command.Parameters.AddWithValue(StoredProcedures.InsUsuario.Nombre, model.Nombre);
                     command.Parameters.AddWithValue(StoredProcedures.InsUsuario.Apellido, model.Apellido);
                     command.Parameters.AddWithValue(StoredProcedures.InsUsuario.RFC, model.RFC);
@@ -564,6 +562,7 @@ namespace OptimusCustomsWebApi.Data
                             IdUsuario = reader["idUsuario"] is DBNull ? null : reader.GetInt32("idUsuario"),
                             RazonSocial = reader.GetString("razonSocial"),
                             IdFactura = reader["idFactura"] is DBNull ? null : reader.GetInt32("idFactura"),
+                            ExisteFactura = reader["factura"] is DBNull ? false : reader.GetBoolean("factura"),
                             ExistePruebaEntrega = reader["pruebaEntrega"] is DBNull ? false : reader.GetBoolean("pruebaEntrega"),
                             ExisteComplementoPago = reader["complementoPago"] is DBNull ? false : reader.GetBoolean("complementoPago"),
                             ExisteComprobantePago = reader["comprobantePago"] is DBNull ? false : reader.GetBoolean("comprobantePago"),

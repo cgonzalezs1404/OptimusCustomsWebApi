@@ -13,6 +13,7 @@ namespace OptimusCustomsWebApi.Model
         public int? IdUsuario { get; set; }
         public string RazonSocial { get; set; }
         public int? IdFactura { get; set; }
+        public bool ExisteFactura { get; set; }
         public bool ExistePruebaEntrega { get; set; }
         public bool ExisteComprobantePago { get; set; }
         public bool ExisteComplementoPago { get; set; }

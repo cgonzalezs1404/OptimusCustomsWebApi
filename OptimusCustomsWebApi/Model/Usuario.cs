@@ -11,7 +11,7 @@ namespace OptimusCustomsWebApi.Model
     public class Usuario
     {
         public int IdUsuario { get; set; }
-        public int IdPrivilegio { get; set; }
+        public int IdTipoUsuario { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string RFC { get; set; }

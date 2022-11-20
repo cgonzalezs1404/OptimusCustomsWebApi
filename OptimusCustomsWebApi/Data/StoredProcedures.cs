@@ -73,7 +73,7 @@ namespace OptimusCustomsWebApi.Data
         public struct GetUsuario
         {
             public static string SpName = "optimus_customs.get_usuario";
-            public static string IdCliente = "_idCliente";
+            public static string IdCliente = "_idUsuario";
         }
 
         public struct LoginUsuario
