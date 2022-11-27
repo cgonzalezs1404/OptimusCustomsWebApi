@@ -40,8 +40,9 @@ namespace OptimusCustomsWebApi.Controllers
             {
                 if (model != null)
                 {
-                    if (DataAccess.Instance.InsertFactura(model) != null)
-                        return Ok(DataAccess.Instance.InsertFactura(model));
+                    var result = DataAccess.Instance.InsertFactura(model);
+                    if (result != null)
+                        return Ok(result);
                     else
                         return BadRequest(null);
                 }

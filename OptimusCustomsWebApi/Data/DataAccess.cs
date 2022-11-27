@@ -120,6 +120,7 @@ namespace OptimusCustomsWebApi.Data
                     {
                         var model = new Factura();
                         model.IdFactura = reader.GetInt32("idFactura");
+                        model.IdOperacion = reader["idOperacion"] is DBNull ? 0 : reader.GetInt32("idOperacion");
                         model.IdTipoFactura = reader.GetInt32("idTipoFactura");
                         model.TipoFactura = reader.GetString("tipoFactura");
                         model.IdEstadoFactura = reader.GetInt32("idEstadoFactura");
@@ -131,7 +132,9 @@ namespace OptimusCustomsWebApi.Data
                         model.Folio = reader.GetString("folio");
                         model.Total = reader.GetDouble("total");
                         model.Descripcion = reader.GetString("descripcion");
+                        model.Comentarios = reader.GetString("comentarios");
                         model.EsAprobado = reader.GetBoolean("esAprobado");
+                        model.EsPagada = reader.GetBoolean("esPagada");
                         result.Add(model);
                     }
                 }
@@ -157,6 +160,7 @@ namespace OptimusCustomsWebApi.Data
                     {
                         model = new Factura();
                         model.IdFactura = reader.GetInt32("idFactura");
+                        model.IdOperacion = reader["idOperacion"] is DBNull ? 0 : reader.GetInt32("idOperacion");
                         model.IdTipoFactura = reader.GetInt32("idTipoFactura");
                         model.TipoFactura = reader.GetString("tipoFactura");
                         model.IdEstadoFactura = reader.GetInt32("idEstadoFactura");
@@ -169,6 +173,7 @@ namespace OptimusCustomsWebApi.Data
                         model.Total = reader.GetDouble("total");
                         model.Descripcion = reader.GetString("descripcion");
                         model.EsAprobado = reader.GetBoolean("esAprobado");
+                        model.EsPagada = reader.GetBoolean("esPagada");
                     }
                 }
             }
@@ -201,6 +206,7 @@ namespace OptimusCustomsWebApi.Data
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.UrlXML, model.FileXml);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsAprobado, model.EsAprobado);
                     command.Parameters.AddWithValue(StoredProcedures.InsFactura.EsPagada, model.EsPagada);
+                    command.Parameters.AddWithValue(StoredProcedures.InsFactura.Comentarios, model.Comentarios);
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -219,9 +225,8 @@ namespace OptimusCustomsWebApi.Data
                             result.Folio = reader.GetString("folio");
                             result.Total = reader.GetDouble("total");
                             result.Descripcion = reader.GetString("descripcion");
-                            //result.FilePdf = reader.GetBytes(0,"urlPdf");
-                            //result.FileXml = reader.GetString("urlXml");
                             result.EsAprobado = reader.GetBoolean("esAprobado");
+                            result.Comentarios = reader.GetString("comentarios");
                         }
                     }
                 }
@@ -271,8 +276,8 @@ namespace OptimusCustomsWebApi.Data
             {
                 using (var command = new MySqlCommand(StoredProcedures.DelFactura.SpName, connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue(StoredProcedures.DelFactura.IdFactura, idFactura);
-
                     command.ExecuteNonQuery();
                 }
             }
@@ -308,7 +313,7 @@ namespace OptimusCustomsWebApi.Data
         }
         #endregion
 
-        #region Clientes
+        #region Usuarios
         /// <summary>
         /// 
         /// </summary>
@@ -677,8 +682,10 @@ namespace OptimusCustomsWebApi.Data
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdOperacion, model.IdOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdTipoOperacion, model.IdTipoOperacion);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdUsuario, model.IdUsuario);
+                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.NumeroOp, model.NumOperacion);
                     command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.IdFactura, model.IdFactura);
-                    command.Parameters.AddWithValue(StoredProcedures.UpdOperacion.FechaFin, model.FechaFin);
                     command.ExecuteNonQuery();
                     return true;
                 }
@@ -755,6 +762,29 @@ namespace OptimusCustomsWebApi.Data
 
             }
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idOperacion"></param>
+        public void DeleteOperacion(int idOperacion)
+        {
+            try
+            {
+                using (var command = new MySqlCommand(StoredProcedures.DelOperacion.SpName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue(StoredProcedures.DelOperacion.IdOperacion, idOperacion);
+
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         #endregion
 

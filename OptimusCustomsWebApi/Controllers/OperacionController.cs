@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OptimusCustomsWebApi.Data;
 using OptimusCustomsWebApi.Model;
+using Quartz.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -163,6 +164,19 @@ namespace OptimusCustomsWebApi.Controllers
 
             }
             return result;
+        }
+
+        [HttpDelete("{id:int}")]
+        public void Delete(int id)
+        {
+            try
+            {
+                DataAccess.Instance.DeleteOperacion(id);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "Error en DeleteOperacion()", ex.Message);
+            }
         }
     }
 }

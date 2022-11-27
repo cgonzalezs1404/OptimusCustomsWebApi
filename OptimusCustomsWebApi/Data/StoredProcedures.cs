@@ -16,7 +16,7 @@ namespace OptimusCustomsWebApi.Data
             public static string IdTipoFactura = "_idTipoFactura";
             public static string IdEstadoFactura = "_idEstadoFactura";
             public static string EsAprobada = "_esAprobada";
-            public static string IdCP = "_idCP";
+            public static string EsPagada = "_esPagada";
         }
 
         public struct GetFactura
@@ -40,6 +40,7 @@ namespace OptimusCustomsWebApi.Data
             public static string UrlXML = "_urlXml";
             public static string EsAprobado = "_esAprobado";
             public static string EsPagada = "_esPagada";
+            public static string Comentarios = "_comentarios";
         }
         public struct UpdFactura
         {
@@ -48,6 +49,7 @@ namespace OptimusCustomsWebApi.Data
             public static string IdEstadoFactura = "_idEstadoFactura";
             public static string EsAprobado = "_esAprobado";
             public static string EsPagada = "_esPagada";
+            public static string Comentarios = "_comentarios";
         }
         public struct DelFactura
         {
@@ -184,9 +186,9 @@ namespace OptimusCustomsWebApi.Data
             public static string SpName = "optimus_customs.upd_operacion";
             public static string IdOperacion = "_idOperacion";
             public static string IdFactura = "_idFactura";
-            public static string IdComprobantePago = "_idComprobantePago";
-            public static string IdComplementoPago = "_idComplementoPago";
-            public static string IdPruebaEntrega = "_idPruebaEntrega";
+            public static string IdTipoOperacion = "_idTipoOperacion";
+            public static string IdUsuario = "_idUsuario";
+            public static string NumeroOp = "_numeroOp";
             public static string FechaFin = "_fechaFin";
         }
 
@@ -210,6 +212,12 @@ namespace OptimusCustomsWebApi.Data
             public static string SpName = "optimus_customs.get_documento";
             public static string IdOperacion = "_idOperacion";
             public static string IdTipoDocumento = "_idTipoDoc";
+        }
+
+        public struct DelOperacion
+        {
+            public static string SpName = "optimus_customs.del_operacion";
+            public static string IdOperacion = "_idOperacion";
         }
         #endregion
 

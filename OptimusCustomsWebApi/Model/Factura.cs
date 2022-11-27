@@ -8,6 +8,7 @@ namespace OptimusCustomsWebApi.Model
     public class Factura
     {
         public int IdFactura { get; set; }
+        public int IdOperacion { get; set; }
         public int IdTipoFactura { get; set; }
         public string TipoFactura { get; set; }
         public int IdEstadoFactura { get; set; }
@@ -21,6 +22,7 @@ namespace OptimusCustomsWebApi.Model
         public string Descripcion { get; set; }
         public byte[] FilePdf { get; set; }
         public byte[] FileXml { get; set; }
+        public string Comentarios { get; set; }
         public bool EsAprobado { get; set; }
         public bool EsPagada { get; set; }
 
