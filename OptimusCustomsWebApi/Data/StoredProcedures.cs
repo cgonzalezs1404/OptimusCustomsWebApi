@@ -159,6 +159,8 @@ namespace OptimusCustomsWebApi.Data
             public static string SpName = "optimus_customs.get_operaciones";
             public static string FromDate = "_fromDate";
             public static string ToDate = "_toDate";
+            public static string IdTipoOperacion = "_idTipoOperacion";
+            public static string IdUsuario = "_idUsuario";
         }
 
         public struct GetOperacion

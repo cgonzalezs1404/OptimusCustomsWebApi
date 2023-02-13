@@ -546,7 +546,7 @@ namespace OptimusCustomsWebApi.Data
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
         /// <returns></returns>
-        public List<Operacion> GetOperaciones(DateTime fromDate, DateTime toDate)
+        public List<Operacion> GetOperaciones(DateTime fromDate, DateTime toDate, int idTipoOperacion, int idUsuario)
         {
             List<Operacion> result = new List<Operacion>();
             using (var command = new MySqlCommand(StoredProcedures.GetOperaciones.SpName, connection))
@@ -554,6 +554,8 @@ namespace OptimusCustomsWebApi.Data
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue(StoredProcedures.GetOperaciones.FromDate, fromDate);
                 command.Parameters.AddWithValue(StoredProcedures.GetOperaciones.ToDate, toDate);
+                command.Parameters.AddWithValue(StoredProcedures.GetOperaciones.IdTipoOperacion, idTipoOperacion == 0 ? null : idTipoOperacion);
+                command.Parameters.AddWithValue(StoredProcedures.GetOperaciones.IdUsuario, idUsuario == 0 ? null : idUsuario);
 
                 using (var reader = command.ExecuteReader())
                 {

@@ -31,9 +31,9 @@ namespace OptimusCustomsWebApi.Controllers
         /// <param name="toDate"></param>
         /// <returns></returns>
         [HttpGet]
-        public ObjectResult Get([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
+        public ObjectResult Get([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate, [FromQuery] int idTipoOperacion, [FromQuery] int idUsuario)
         {
-            var result = DataAccess.Instance.GetOperaciones(fromDate, toDate);
+            var result = DataAccess.Instance.GetOperaciones(fromDate, toDate, idTipoOperacion, idUsuario);
             if (result != null && result.Count != 0)
                 return Ok(result);
             else if (result != null && result.Count == 0)
