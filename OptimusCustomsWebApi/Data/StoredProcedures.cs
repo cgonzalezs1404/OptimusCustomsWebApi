@@ -15,6 +15,7 @@ namespace OptimusCustomsWebApi.Data
             public static string ToDate = "_toDate";
             public static string IdTipoFactura = "_idTipoFactura";
             public static string IdEstadoFactura = "_idEstadoFactura";
+            public static string IdUsuario = "_idUsuario";
             public static string EsAprobada = "_esAprobada";
             public static string EsPagada = "_esPagada";
         }
@@ -130,6 +131,11 @@ namespace OptimusCustomsWebApi.Data
         public struct GetEstadoFacturaCatalogue
         {
             public static string SpName = "optimus_customs.get_catalogo_estado_factura";
+        }
+
+        public struct GetTipoFacturaCatalogue
+        {
+            public static string SpName = "optimus_customs.get_catalogo_tipo_factura";
         }
 
         public struct GetConfigFacturas

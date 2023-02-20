@@ -22,9 +22,9 @@ namespace OptimusCustomsWebApi.Controllers
         }
 
         [HttpGet]
-        public List<Factura> Get([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
+        public List<Factura> Get([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate, [FromQuery] int idTipoFactura, [FromQuery] int idEstadoFactura, [FromQuery] int idUsuario)
         {
-            return DataAccess.Instance.GetFacturas(fromDate, toDate);
+            return DataAccess.Instance.GetFacturas(fromDate, toDate, idTipoFactura, idEstadoFactura, idUsuario);
         }
 
         [HttpGet("{idFactura:int}")]

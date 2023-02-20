@@ -105,7 +105,7 @@ namespace OptimusCustomsWebApi.Data
         /// <param name="fromDate"></param>
         /// <param name="toDate"></param>
         /// <returns></returns>
-        public List<Factura> GetFacturas(DateTime fromDate, DateTime toDate)
+        public List<Factura> GetFacturas(DateTime fromDate, DateTime toDate, int idTipoFactura, int idEstdoFactura, int idUsuario)
         {
             List<Factura> result = new List<Factura>();
             using (var command = new MySqlCommand(StoredProcedures.GetFacturas.SpName, connection))
@@ -113,6 +113,9 @@ namespace OptimusCustomsWebApi.Data
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue(StoredProcedures.GetFacturas.FromDate, fromDate);
                 command.Parameters.AddWithValue(StoredProcedures.GetFacturas.ToDate, toDate);
+                command.Parameters.AddWithValue(StoredProcedures.GetFacturas.IdEstadoFactura, idEstdoFactura == 0 ? null : idEstdoFactura);
+                command.Parameters.AddWithValue(StoredProcedures.GetFacturas.IdTipoFactura, idTipoFactura == 0 ? null : idTipoFactura);
+                command.Parameters.AddWithValue(StoredProcedures.GetFacturas.IdUsuario, idUsuario == 0 ? null : idUsuario);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -809,6 +812,9 @@ namespace OptimusCustomsWebApi.Data
                     case TipoCatalogo.EstadoFactura:
                         sp = StoredProcedures.GetEstadoFacturaCatalogue.SpName;
                         break;
+                    case TipoCatalogo.TipoFactura:
+                        sp = StoredProcedures.GetTipoFacturaCatalogue.SpName;
+                        break;
                     case TipoCatalogo.TipoOperacion:
                         sp = StoredProcedures.GetTipoOperacionCatalogue.SpName;
                         break;
@@ -886,7 +892,7 @@ namespace OptimusCustomsWebApi.Data
         /// </summary>
         public void ExecuteJob()
         {
-            var facturas = DataAccess.Instance.GetFacturas(new DateTime(DateTime.Now.Year, 4, 1), new DateTime(DateTime.Now.Year, 4, 30));
+            var facturas = DataAccess.Instance.GetFacturas(new DateTime(DateTime.Now.Year, 4, 1), new DateTime(DateTime.Now.Year, 4, 30), 0, 0, 0);
             var estadosFactura = DataAccess.Instance.GetCatalogo(TipoCatalogo.EstadoFactura);
             var config = DataAccess.Instance.GetConfigFacturas();
 
