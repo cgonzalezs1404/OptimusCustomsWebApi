@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MySqlX.XDevAPI.Common;
 using OptimusCustomsWebApi.Data;
 using OptimusCustomsWebApi.Model;
 using System;
@@ -22,15 +23,31 @@ namespace OptimusCustomsWebApi.Controllers
         }
 
         [HttpGet]
-        public List<Factura> Get([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate, [FromQuery] int idTipoFactura, [FromQuery] int idEstadoFactura, [FromQuery] int idUsuario)
+        public ObjectResult Get([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate, [FromQuery] int idTipoFactura, [FromQuery] int idEstadoFactura, [FromQuery] int idUsuario)
         {
-            return DataAccess.Instance.GetFacturas(fromDate, toDate, idTipoFactura, idEstadoFactura, idUsuario);
+            var result = DataAccess.Instance.GetFacturas(fromDate, toDate, idTipoFactura, idEstadoFactura, idUsuario);
+            if (result != null && result.Count != 0)
+                return Ok(result);
+            else if (result != null && result.Count == 0)
+                return NotFound(null);
+            else if (result == null)
+                return BadRequest(null);
+            else
+                return null;
         }
 
         [HttpGet("{idFactura:int}")]
-        public Factura Get(int idFactura)
+        public ObjectResult Get(int Id)
         {
-            return DataAccess.Instance.GetFactura(idFactura);
+            var result = DataAccess.Instance.GetFactura(Id);
+            if (result != null)
+                return Ok(result);
+            else if (Id != 0 && result == null)
+                return NotFound(null);
+            else if (result == null)
+                return BadRequest(null);
+            else
+                return null;
         }
 
         [HttpPost]
